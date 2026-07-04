@@ -32,7 +32,7 @@ export default function Index() {
           <p>{errors.email?.message}</p>
           <TextInput {...register("password")} placeholder="Password" />
           <p>{errors.password?.message}</p>
-          <TextInput type="submit" />
+          <input type="submit" />
         </form>
       </View>
       <View>
