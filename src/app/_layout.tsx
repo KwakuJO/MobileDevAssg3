@@ -4,20 +4,20 @@ export default function RootLayout() {
   return (
     <>
       <title>June</title>
-      
+
       <Tabs>
         <Tabs.Screen
-          name="(signin)" 
+          name="(signin)"
           options={{
             title: "Sign In",
-            headerTitle: "Sign In"
+            headerTitle: "Sign In",
           }}
         />
         <Tabs.Screen
-          name="(signup)" 
+          name="(signup)"
           options={{
             title: "Sign Up",
-            headerTitle: "Sign Up"
+            headerTitle: "Sign Up",
           }}
         />
       </Tabs>
