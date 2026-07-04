@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "expo-router";
 import { useForm } from "react-hook-form";
-import { TextInput, View } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 import { z } from "zod";
 
 export default function signup() {
@@ -31,30 +31,40 @@ export default function signup() {
   // console.log(errors);
 
   return (
-    <View>
-      <form
-        onSubmit={handleSubmit((data) => {
-          console.log(data);
-        })}
-      >
-        <TextInput {...register("fullName")} placeholder="Full Name" />
-        <p>{errors.fullName?.message}</p>
-        <TextInput {...register("email")} placeholder="Email" />
-        <p>{errors.email?.message}</p>
-        <TextInput {...register("phone")} placeholder="Phone Number" />
-        <p>{errors.phone?.message}</p>
-        <TextInput {...register("password")} placeholder="Password" />
-        <p>{errors.password?.message}</p>
-        <TextInput
-          {...register("passwordConfirm")}
-          placeholder="Confirm Password"
-        />
-        <p>{errors.passwordConfirm?.message}</p>
-        <input type="submit" />
-      </form>
+    <View style={styles.container}>
+      <View>
+        <form
+          onSubmit={handleSubmit((data) => {
+            console.log(data);
+          })}
+        >
+          <TextInput {...register("fullName")} placeholder="Full Name" />
+          <p>{errors.fullName?.message}</p>
+          <TextInput {...register("email")} placeholder="Email" />
+          <p>{errors.email?.message}</p>
+          <TextInput {...register("phone")} placeholder="Phone Number" />
+          <p>{errors.phone?.message}</p>
+          <TextInput {...register("password")} placeholder="Password" />
+          <p>{errors.password?.message}</p>
+          <TextInput
+            {...register("passwordConfirm")}
+            placeholder="Confirm Password"
+          />
+          <p>{errors.passwordConfirm?.message}</p>
+          <input type="submit" />
+        </form>
+      </View>
       <View>
         <Link href="/(signin)"> Wish to sign in? Click here </Link>
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

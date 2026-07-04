@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "expo-router";
 import { useForm } from "react-hook-form";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 import { z } from "zod";
 
 export default function Index() {
@@ -28,15 +28,15 @@ export default function Index() {
             console.log(data);
           })}
         >
-          <input {...register("email")} placeholder="Email" />
+          <TextInput {...register("email")} placeholder="Email" />
           <p>{errors.email?.message}</p>
-          <input {...register("password")} placeholder="Password" />
+          <TextInput {...register("password")} placeholder="Password" />
           <p>{errors.password?.message}</p>
-          <input type="submit" />
+          <TextInput type="submit" />
         </form>
       </View>
       <View>
-        <Link href="/(signin)"> Wish to sign in? Click here </Link>
+        <Link href="/(signup)"> Wish to sign in? Click here </Link>
       </View>
     </View>
   );
