@@ -1,17 +1,21 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "expo-router";
-import { useForm } from "react-hook-form";
-import { StyleSheet, TextInput, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Controller, useForm } from "react-hook-form";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { z } from "zod";
+import { pStyles, rStyles } from "../../../constants/GlobalStyles";
 
 export default function signup() {
+
+  const router = useRouter();
+
   const signup = z
     .object({
-      fullName: z.string().min(4, "Please input your Full Name"),
+      fullName: z.string("Please input your Full Name").min(4),
       email: z.email("Please input your Email"),
-      phone: z.string().min(10, "Please input a Phone Number"), // e164 format is "+(areaCode)1234567890"
-      password: z.string().min(8, "Password must be longer than 8 characters"),
-      passwordConfirm: z.string().min(8, "Passwords must match"),
+      phone: z.string("Please input your Phone Number").min(10), // e164 format is "+(areaCode)1234567890"
+      password: z.string("Please create a password").min(8, "Password must be longer than 8 characters"),
+      passwordConfirm: z.string("Please confirm your password").min(8, "Passwords must match"),
     })
     .refine((data) => data.password === data.passwordConfirm, {
       // message: "Passwords Must Match",
@@ -23,6 +27,7 @@ export default function signup() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<signupFormType>({
     resolver: zodResolver(signup),
@@ -31,31 +36,83 @@ export default function signup() {
   // console.log(errors);
 
   return (
-    <View style={styles.container}>
-      <View>
-        <form
-          onSubmit={handleSubmit((data) => {
-            console.log(data);
-          })}
-        >
-          <TextInput {...register("fullName")} placeholder="Full Name" />
-          <p>{errors.fullName?.message}</p>
-          <TextInput {...register("email")} placeholder="Email" />
-          <p>{errors.email?.message}</p>
-          <TextInput {...register("phone")} placeholder="Phone Number" />
-          <p>{errors.phone?.message}</p>
-          <TextInput {...register("password")} placeholder="Password" />
-          <p>{errors.password?.message}</p>
-          <TextInput
-            {...register("passwordConfirm")}
-            placeholder="Confirm Password"
-          />
-          <p>{errors.passwordConfirm?.message}</p>
-          <input type="submit" />
-        </form>
+    <View style={[rStyles.formView]}>
+      <View style={[pStyles.w70]}>
+        <Controller 
+          control={control}
+          name="fullName"
+          render={({ field: {onChange, onBlur, value}}) => (
+            <TextInput 
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              style={[rStyles.tInput]}
+              placeholder="Full Name"
+            />
+          )}
+        />
+        {errors.fullName?.message && <Text>{errors.fullName.message}</Text>}
+        <Controller 
+          control={control}
+          name="email"
+          render={({ field: {onChange, onBlur, value}}) => (
+            <TextInput 
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              style={[rStyles.tInput]}
+              placeholder="Email"
+            />
+          )}
+        />
+        {errors.email?.message && <Text>{errors.email.message}</Text>}
+        <Controller 
+          control={control}
+          name="phone"
+          render={({ field: {onChange, onBlur, value}}) => (
+            <TextInput 
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              style={[rStyles.tInput]}
+              placeholder="Phone Number"
+            />
+          )}
+        />
+        {errors.phone?.message && <Text>{errors.phone.message}</Text>}
+        <Controller 
+          control={control}
+          name="password"
+          render={({ field: {onChange, onBlur, value}}) => (
+            <TextInput 
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              style={[rStyles.tInput]}
+              placeholder="Password"
+            />
+          )}
+        />
+        {errors.password?.message && <Text>{errors.password.message}</Text>}
+        <Controller 
+          control={control}
+          name="passwordConfirm"
+          render={({ field: {onChange, onBlur, value}}) => (
+            <TextInput 
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              style={[rStyles.tInput]}
+              placeholder="Confirm Password"
+            />
+          )}
+        />
+        {errors.fullName?.message && <Text>{errors.fullName.message}</Text>}
+        <Button title="Sign Up" onPress={handleSubmit((data) => {console.log("junimo");})}/>
       </View>
       <View>
-        <Link href="/(signin)"> Wish to sign in? Click here </Link>
+        <Text onPress={() => {router.replace("/(signin)")}}> Have an account? Sign in here </Text>
+        {/* <Button title="Have an account? Sign in here" onPress={() => {router.replace("/(signin)")}} /> */}
       </View>
     </View>
   );
