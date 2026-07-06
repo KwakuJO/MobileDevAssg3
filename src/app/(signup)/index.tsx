@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, Image, StyleSheet, Text, TextInput, View } from "react-native";
 import { z } from "zod";
 import { pStyles, rStyles } from "../../../constants/GlobalStyles";
 
@@ -11,14 +11,14 @@ export default function signup() {
 
   const signup = z
     .object({
-      fullName: z.string("Please input your Full Name").min(4),
+      fullName: z.string("Please input your Full Name").min(4, "Please input your Full Name"),
       email: z.email("Please input your Email"),
-      phone: z.string("Please input your Phone Number").min(10), // e164 format is "+(areaCode)1234567890"
+      phone: z.string("Please input your Phone Number").min(10, "Please input your Phone Number"), // e164 format is "+(areaCode)1234567890"
       password: z.string("Please create a password").min(8, "Password must be longer than 8 characters"),
-      passwordConfirm: z.string("Please confirm your password").min(8, "Passwords must match"),
+      passwordConfirm: z.string("Please confirm your password").min(8, "Please confirm your password"),
     })
     .refine((data) => data.password === data.passwordConfirm, {
-      // message: "Passwords Must Match",
+      message: "Passwords must Match",
       path: ["passwordConfirm"],
     });
 
@@ -33,11 +33,20 @@ export default function signup() {
     resolver: zodResolver(signup),
   });
 
-  // console.log(errors);
+  
 
   return (
-    <View style={[rStyles.formView]}>
-      <View style={[pStyles.w70]}>
+    <View style={[rStyles.formView, pStyles.gap10, pStyles.justifyCenter]}>
+      <View style={[pStyles.wFull, pStyles.itemsCenter]}>
+        {/* <Image source={require('@/assets/images/android-icon-foreground.png')}/> */}
+        <View style={[pStyles.w50, pStyles.aspect1]}>
+          <Image source={require('@/assets/images/icon.png')} style={[rStyles.imageSizing, pStyles.radius20]}/>
+        </View>
+        <View>
+          <Text style={[pStyles.textCenter, pStyles.size20, pStyles.ptb5]}>Employee Information Form</Text>
+        </View>
+      </View>
+      <View style={[pStyles.w70, pStyles.gap10]}>
         <Controller 
           control={control}
           name="fullName"
@@ -46,7 +55,7 @@ export default function signup() {
               onChangeText={onChange}
               onBlur={onBlur}
               value={value}
-              style={[rStyles.tInput]}
+              style={(!errors.fullName?.message) ? (rStyles.tInput): (rStyles.tInputBad)}
               placeholder="Full Name"
             />
           )}
@@ -60,7 +69,7 @@ export default function signup() {
               onChangeText={onChange}
               onBlur={onBlur}
               value={value}
-              style={[rStyles.tInput]}
+              style={(!errors.email?.message) ? (rStyles.tInput): (rStyles.tInputBad)}
               placeholder="Email"
             />
           )}
@@ -74,7 +83,7 @@ export default function signup() {
               onChangeText={onChange}
               onBlur={onBlur}
               value={value}
-              style={[rStyles.tInput]}
+              style={(!errors.phone?.message) ? (rStyles.tInput): (rStyles.tInputBad)}
               placeholder="Phone Number"
             />
           )}
@@ -88,8 +97,9 @@ export default function signup() {
               onChangeText={onChange}
               onBlur={onBlur}
               value={value}
-              style={[rStyles.tInput]}
+              style={(!errors.password?.message) ? (rStyles.tInput): (rStyles.tInputBad)}
               placeholder="Password"
+              secureTextEntry={true}
             />
           )}
         />
@@ -102,15 +112,17 @@ export default function signup() {
               onChangeText={onChange}
               onBlur={onBlur}
               value={value}
-              style={[rStyles.tInput]}
+              style={(!errors.passwordConfirm?.message) ? (rStyles.tInput): (rStyles.tInputBad)}
               placeholder="Confirm Password"
+              secureTextEntry={true}
+              
             />
           )}
         />
-        {errors.fullName?.message && <Text>{errors.fullName.message}</Text>}
+        {(errors.passwordConfirm?.message) && <Text>{errors.passwordConfirm.message}</Text>}
         <Button title="Sign Up" onPress={handleSubmit((data) => {console.log("junimo");})}/>
       </View>
-      <View>
+      <View style={[pStyles.gap10]}>
         <Text onPress={() => {router.replace("/(signin)")}}> Have an account? Sign in here </Text>
         {/* <Button title="Have an account? Sign in here" onPress={() => {router.replace("/(signin)")}} /> */}
       </View>
