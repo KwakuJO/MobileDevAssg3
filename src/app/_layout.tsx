@@ -4,25 +4,22 @@ import { Stack } from "expo-router";
 export default function RootLayout() {
   return (
     <>
+      {/* <SafeAreaView> */}
       <Stack>
-        <Stack.Screen 
+        <Stack.Screen
           name="(signin)"
           options={{
-            // title: "Sign In",
-            // headerTitle: "Sign In",
             headerShown: false,
           }}
         />
-        <Stack.Screen 
+        <Stack.Screen
           name="(signup)"
           options={{
-            // title: "Sign Up",
-            // headerTitle: "Sign Up",
             headerShown: false,
           }}
         />
       </Stack>
-
+      {/* </SafeAreaView> */}
     </>
   );
 }
