@@ -3,9 +3,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Alert, Button, Image, Text, TextInput, View } from "react-native";
+import { Alert, Image, Pressable, Text, TextInput, View } from "react-native";
 import { z } from "zod";
-import { pStyles, rStyles } from "../../../constants/GlobalStyles";
+import { pStyles, rStyles } from "../../../../constants/GlobalStyles";
 
 export default function Index() {
   const [accepted, setAccepted] = useState(false);
@@ -15,7 +15,7 @@ export default function Index() {
     email: z.email("Please input your Email"),
     password: z
       .string("Please input your Password")
-      .min(8, "Password must be longer than 8 characters"),
+      .min(8, "Please input your Password"),
   });
 
   type signinFormType = z.infer<typeof signin>;
@@ -32,6 +32,22 @@ export default function Index() {
   console.log(errors);
 
   return (
+    <>
+    <View style={[pStyles.h15, pStyles.m5]}>
+      <Pressable style={[
+        pStyles.aspect1,
+        pStyles.hFull,
+        pStyles.bgBlue,
+        pStyles.radius50,
+        pStyles.justifyCenter,
+        pStyles.itemsCenter, 
+        pStyles.absoluteTL,
+        pStyles.borderBlack
+      ]}
+      onPress={router.back}>
+        <Text style={[ pStyles.size30 ]}>X</Text>
+      </Pressable>
+    </View>
     <View style={[rStyles.formView, pStyles.gap10, pStyles.justifyCenter]}>
       <View style={[pStyles.wFull, pStyles.itemsCenter]}>
         <View style={[pStyles.w50, pStyles.aspect1]}>
@@ -42,11 +58,11 @@ export default function Index() {
         </View>
         <View>
           <Text style={[pStyles.textCenter, pStyles.size20, pStyles.ptb5]}>
-            Employee Information Form
+            Authentication Sign In Form
           </Text>
         </View>
       </View>
-      <View style={[pStyles.w70, pStyles.gap10, pStyles.ptb5]}>
+      <View style={[pStyles.w70, pStyles.gap10]}>
         <Controller
           control={control}
           name="email"
@@ -84,18 +100,20 @@ export default function Index() {
             onValueChange={setAccepted}
           />
         </Host>
-        <Button
-          title="Sign In"
+        <Pressable
+          style={[rStyles.blueButton, pStyles.borderBlack]}
           onPress={handleSubmit((data) => {
             console.log("junimo");
           })}
-        />
+        >
+          <Text style={[pStyles.size20, pStyles.ptb2]}>Sign Up</Text>
+        </Pressable>
       </View>
       <View style={[pStyles.gap10]}>
         <Text
           style={[pStyles.textCenter]}
           onPress={() => {
-            router.replace("/(signup)");
+            router.replace("/auth/(signup)");
           }}
         >
           No account? Register here
@@ -103,12 +121,16 @@ export default function Index() {
         <Text
           style={[pStyles.textCenter]}
           onPress={() => {
-            Alert.alert("This functionality wasn't expected");
+            Alert.alert(
+              "No Forgot Email Functionality", 
+              "This functionality wasn't expected and therefore wasn't implemented"
+            );
           }}
         >
           Forgot Email?
         </Text>
       </View>
     </View>
+    </>
   );
 }
