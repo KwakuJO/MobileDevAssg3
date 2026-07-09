@@ -1,11 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
-import { Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Image, Pressable, Text, TextInput, View } from "react-native";
 import { z } from "zod";
+import BackButton from "../../../../components/BackButton";
 import { pStyles, rStyles } from "../../../../constants/GlobalStyles";
 
-export default function signup() {
+export default function SignedUp() {
   const router = useRouter();
 
   const signup = z
@@ -42,21 +43,7 @@ export default function signup() {
 
   return (
     <>
-      <View style={[pStyles.h15, pStyles.m5]}>
-        <Pressable style={[
-          pStyles.aspect1,
-          pStyles.hFull,
-          pStyles.bgBlue,
-          pStyles.radius50,
-          pStyles.justifyCenter,
-          pStyles.itemsCenter, 
-          pStyles.absoluteTL,
-          pStyles.borderBlack
-        ]}
-        onPress={router.back}>
-          <Text style={[ pStyles.size30 ]}>X</Text>
-        </Pressable>
-      </View>
+      <BackButton />
       <View style={[rStyles.formView, pStyles.gap10, pStyles.justifyCenter]}>
         <View style={[pStyles.wFull, pStyles.itemsCenter]}>
           <View style={[pStyles.w50, pStyles.aspect1]}>
@@ -161,10 +148,15 @@ export default function signup() {
           <Pressable
             style={[rStyles.blueButton, pStyles.borderBlack]}
             onPress={handleSubmit((data) => {
-              console.log("junimo");
+              router.push({
+                pathname: "/signedIn",
+                params: { name: "Signed Up", path: "Authentication" },
+              });
             })}
           >
-            <Text style={[pStyles.size20, pStyles.ptb2]}>Sign Up</Text>
+            <Text style={[pStyles.size20, pStyles.textWhite, pStyles.ptb2]}>
+              Sign Up
+            </Text>
           </Pressable>
         </View>
         <View style={[pStyles.gap10]}>
@@ -180,11 +172,3 @@ export default function signup() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
